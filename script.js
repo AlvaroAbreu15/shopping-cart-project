@@ -73,3 +73,8 @@ const createCartItemElement = ({ id, title, price }) => {
 };
 
 window.onload = () => { };
+
+
+function comecando () {
+  
+}
