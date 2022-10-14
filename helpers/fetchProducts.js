@@ -1,23 +1,21 @@
 // const fetch = require('node-fetch');
 
 const fetchProducts = async (endpoint) => {
-  // seu código aqui
-  if(endpoint !== undefined){
   try { 
-  const result = await fetch(`https://api.mercadolibre.com/sites/MLB/search?q=${endpoint}`);
-  const data = await result.json();
-  return data;
-  } catch(error) {
-   throw new Error('Error');
+  const url = `https://api.mercadolibre.com/sites/MLB/search?q=${endpoint}`;
+  const result = await fetch(url);
+  const response = await result.json(); 
+  const resultado = await response.results;
+  return resultado;
+  } catch (error) {
+    throw Error('You must provide an url');
   }
-  }
-  throw new Error('You must provide an url');
-};  
-
-fetchProducts('computador');
+};
 
 if (typeof module !== 'undefined') {
   module.exports = {
     fetchProducts,
   };
 }
+ fetchProducts('computador')
+  .then((e) => console.log(e));

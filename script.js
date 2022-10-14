@@ -1,3 +1,5 @@
+// const { fetchProducts } = require('./helpers/fetchProducts');
+
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
 
@@ -45,16 +47,27 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('span', 'item__title', title));
   section.appendChild(createProductImageElement(thumbnail));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
+  
   return section;
 };
+
+const fetchFuntion = async (end) => {
+  const func = await fetchProducts(end);
+  func.forEach((e) => {
+    const sectionOfItems = document.querySelector('.items');
+    const element = createProductItemElement(e);
+    sectionOfItems.appendChild(element);
+  });
+};
+
+fetchFuntion('computador');
 
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
  * @returns {string} ID do produto.
  */
-const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
+// const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -64,14 +77,12 @@ const getIdFromProductItem = (product) => product.querySelector('span.id').inner
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
-const createCartItemElement = ({ id, title, price }) => {
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
-  return li;
-};
+// const createCartItemElement = ({ id, title, price }) => {
+//   const li = document.createElement('li');
+//   li.className = 'cart__item';
+//   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
+//   li.addEventListener('click', cartItemClickListener);
+//   return li;
+// };
 
-window.onload = () => { };
-
-
+// window.onload = () => { };

@@ -1,6 +1,7 @@
 require('../mocks/fetchSimulator');
 const { expect } = require('expect');
 const { fetchProducts } = require('../helpers/fetchProducts');
+const { results } = require('../mocks/search');
 const computadorSearch = require('../mocks/search');
 
 describe('1 - Teste a função fetchProducts', () => {
@@ -19,9 +20,9 @@ describe('1 - Teste a função fetchProducts', () => {
   });
   test(`if return of the fetchProducts with 'computador' as argument contains the same struct data of the computadorSearch object. `, async () => {
     const func = await fetchProducts('computador');
-    expect(func).toEqual(computadorSearch);
+    expect(func).toEqual(computadorSearch['results']);
   });
-  // test(``, () => {
-  //   expect(() => fetchProducts()).toThrow('You must provide an url');
-  // })
+  test(`If, call fetchProducts function without argument, returns an error with mensage 'You must provide an url'.`, async () => { 
+    await expect(fetchProducts()).rejects.toThrow('You must provide an url');
+  });
 });
