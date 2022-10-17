@@ -1,7 +1,13 @@
-// const { fetchProducts } = require('./helpers/fetchProducts');
-
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
+
+// const { id } = require("prelude-ls");
+
+// const { fetchProducts } = require('./helpers/fetchProducts');
+
+// const { fetchItem } = require("./helpers/fetchItem");
+
+// const { fetchItem } = require("./helpers/fetchItem");
 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
@@ -47,11 +53,11 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('span', 'item__title', title));
   section.appendChild(createProductImageElement(thumbnail));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-  
+
   return section;
 };
 
-const fetchFuntion = async (end) => {
+const fetchFunction = async (end) => {
   const func = await fetchProducts(end);
   func.forEach((e) => {
     const sectionOfItems = document.querySelector('.items');
@@ -60,14 +66,12 @@ const fetchFuntion = async (end) => {
   });
 };
 
-fetchFuntion('computador');
-
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
  * @returns {string} ID do produto.
  */
-// const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
+//  const getIdFromProductItem = (product) => product.querySelector('span.item_id').innerText;
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -77,12 +81,36 @@ fetchFuntion('computador');
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
-// const createCartItemElement = ({ id, title, price }) => {
-//   const li = document.createElement('li');
-//   li.className = 'cart__item';
-//   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-//   li.addEventListener('click', cartItemClickListener);
-//   return li;
-// };
 
-// window.onload = () => { };
+const createCartItemElement = ({ id, title, price }) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
+  // li.addEventListener('click', catchItemValue);
+  return li;
+};
+
+const cartItemAppend = async (idProduct) => {
+  // const getId = getIdFromProductItem(product);
+  const functionItem = await fetchItem(idProduct);
+  const itemAdd = createCartItemElement(functionItem);
+  const getList = document.querySelector('.cart__items');
+  getList.appendChild(itemAdd);
+};
+
+const catchItemValue = () => {
+  const buttons = document.getElementsByClassName('item__add');
+    for (const product of buttons) {
+      product.addEventListener('click', () => {
+        const father = product.parentNode;
+        const firstChildId = father.firstChild;
+        const idCapture = firstChildId.textContent;
+        cartItemAppend(idCapture);
+      });
+    }
+};
+
+window.onload = async () => {
+  await fetchFunction('computador');
+  catchItemValue();
+};
