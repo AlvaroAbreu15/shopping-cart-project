@@ -82,11 +82,15 @@ const fetchFunction = async (end) => {
  * @returns {Element} Elemento de um item do carrinho.
  */
 
+const clickListener = (event) => {
+  event.target.remove();
+};
+
 const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  // li.addEventListener('click', catchItemValue);
+  li.addEventListener('click', clickListener);
   return li;
 };
 
