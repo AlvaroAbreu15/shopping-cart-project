@@ -132,7 +132,9 @@ const catchItemValueById = () => {
     for (const product of buttons) {
       product.addEventListener('click', () => {
         const id = product.parentNode.firstChild.textContent;
+        // const price = product.parentNode.firstChild.
         cartItemAppend(id); // Dando o id capturado com o click
+        sumFunction(id);
       });
     }
 };
@@ -171,6 +173,26 @@ const emptyCart = () => {
     cart.innerHTML = '';
   });
 };
+
+const sumValues = ({price}) => {
+  const parsedPrice = JSON.parse(localStorage.getItem('priceItems'));
+  // localStorage.setItem('priceItems', JSON.stringify(price));
+  if (parsedPrice === null) {   
+  } 
+  const sectionCatch = document.querySelector('.cart');
+  const sideValue = document.createElement('h3');
+  sideValue.className = 'total-price';
+  sideValue.innerHTML = `Total Price: ${price}`;
+  sectionCatch.appendChild(sideValue);
+};
+
+sumFunction = async (id) => {
+  const fetchPrice = await fetchItem(id);
+  const insertPrice = sumValues(fetchPrice); 
+  
+};
+
+
 
 window.onload = async () => {
   await fetchFunction('computador');
