@@ -1,6 +1,18 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
 
+// const { getRules } = require("axe-core");
+// const getSavedCartItems = require("./helpers/getSavedCartItems");
+
+// const saveCartItems = require("./helpers/saveCartItems");
+
+// const saveCartItems = require("./helpers/saveCartItems");
+
+// const { array } = require("yargs");
+
+// const saveCartItems = require("./helpers/saveCartItems");
+
+// const saveCartItems = require("./helpers/saveCartItems");
 // const { id } = require("prelude-ls");
 
 // const { fetchProducts } = require('./helpers/fetchProducts');
@@ -94,27 +106,78 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
+// const createCartModel = ({id, title, price}) => `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
+
 const cartItemAppend = async (idProduct) => {
-  // const getId = getIdFromProductItem(product);
-  const functionItem = await fetchItem(idProduct);
-  const itemAdd = createCartItemElement(functionItem);
+  const functionItem = await fetchItem(idProduct); // Pegando as infos dos produtos a partir do ID
+  const itemAdd = createCartItemElement(functionItem); // criando o modelo a partir das infos do produto
+
   const getList = document.querySelector('.cart__items');
-  getList.appendChild(itemAdd);
+  
+  getList.appendChild(itemAdd); // criando os elementos do carrinho como filho da 'ol'
+  // const catchItem = getSavedCartItems(); // Informação que ta salva no localStorage;
+  if (localStorage.getItem('cartItems') === null) { 
+    const arrayEmpty = [];
+    arrayEmpty.push(itemAdd.innerText);
+    saveCartItems(arrayEmpty);
+  } else { 
+  const array = [...getSavedCartItems()];
+  const soma = itemAdd.innerText;
+  array.push(soma);
+  console.log(array);
+  saveCartItems(array);
+  }
 };
 
-const catchItemValue = () => {
+const catchItemValueById = () => {
   const buttons = document.getElementsByClassName('item__add');
     for (const product of buttons) {
       product.addEventListener('click', () => {
-        const father = product.parentNode;
-        const firstChildId = father.firstChild;
-        const idCapture = firstChildId.textContent;
-        cartItemAppend(idCapture);
+        const id = product.parentNode.firstChild.textContent;
+        cartItemAppend(id); // Dando o id capturado com o click
       });
     }
 };
 
+const clickListenerLocal = (evento) => {
+  evento.target.remove();
+  // localStorage.removeItem('cartItems');
+};
+
+const functioOfList = (arg) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = arg;
+  li.addEventListener('click', clickListenerLocal);
+  return li;
+};
+
+const elementsSaved = () => {
+  const getListAfter = document.querySelector('.cart__items');
+  // if (localStorage.getItem('cartItems') !== null) { 
+  const elements = getSavedCartItems();
+  // console.log(elements);
+  if (elements !== null) { 
+  elements.forEach((el) => {
+    const modelReady = functioOfList(el);
+    getListAfter.appendChild(modelReady);
+  });
+  }
+  // getListAfter.innerHTML = '';
+};
+
+const emptyCart = () => {
+  const buttonEmpty = document.querySelector('.empty-cart');
+  buttonEmpty.addEventListener('click', () => {
+    localStorage.clear();
+    const cart = document.querySelector('.cart__items');
+    cart.innerHTML = '';
+  });
+};
+
 window.onload = async () => {
   await fetchFunction('computador');
-  catchItemValue();
+  catchItemValueById();
+  elementsSaved();
+  emptyCart();
 };
