@@ -108,12 +108,10 @@ const createCartItemElement = ({ id, title, price }) => {
 
 // const createCartModel = ({id, title, price}) => `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
 
+const getList = document.querySelector('.cart__items');
 const cartItemAppend = async (idProduct) => {
   const functionItem = await fetchItem(idProduct); // Pegando as infos dos produtos a partir do ID
-  const itemAdd = createCartItemElement(functionItem); // criando o modelo a partir das infos do produto
-
-  const getList = document.querySelector('.cart__items');
-  
+  const itemAdd = createCartItemElement(functionItem); // criando o modelo a partir das infos do produto  
   getList.appendChild(itemAdd); // criando os elementos do carrinho como filho da 'ol'
   // const catchItem = getSavedCartItems(); // Informação que ta salva no localStorage;
   if (localStorage.getItem('cartItems') === null) { 
@@ -153,14 +151,13 @@ const functioOfList = (arg) => {
 };
 
 const elementsSaved = () => {
-  const getListAfter = document.querySelector('.cart__items');
   // if (localStorage.getItem('cartItems') !== null) { 
   const elements = getSavedCartItems();
   // console.log(elements);
   if (elements !== null) { 
   elements.forEach((el) => {
     const modelReady = functioOfList(el);
-    getListAfter.appendChild(modelReady);
+    getList.appendChild(modelReady);
   });
   }
   // getListAfter.innerHTML = '';
